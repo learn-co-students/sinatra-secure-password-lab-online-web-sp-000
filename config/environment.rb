@@ -1,6 +1,6 @@
 require 'bundler'
 Bundler.require
-
+ActiveRecord::Base.logger = nil
 configure :development do
 	set :database, {adapter: "sqlite3", database: "db/database.sqlite3"}
 end
