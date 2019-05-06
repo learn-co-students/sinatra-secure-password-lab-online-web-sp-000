@@ -1,5 +1,7 @@
 require "./config/environment"
 require "./app/models/user"
+require 'pry'
+
 class ApplicationController < Sinatra::Base
 
   configure do
@@ -44,9 +46,48 @@ class ApplicationController < Sinatra::Base
 
   get '/account' do
     @user = User.find(session[:user_id])
+
     erb :account
   end
 
+
+  get "/account/deposit" do
+      erb :deposit
+  end
+
+  post "/account/deposit" do
+      # 1ST ATTEMPT
+      # update params balance with user input
+      # @user = User.update(balance: params[:balance])
+      # add user input to balance in db
+      # @user.balance += params[:balance]
+      # redirect to account page
+      # redirect "/account"
+
+      # 2ND ATTEMPT
+      # amount += params[:balance].to_f
+      # @user.update(amount)
+      # @user.save
+      # redirect "/account"
+
+      # 3RD ATTEMPT
+      # if params[:balance] != nil
+      #     user = User.find_by(params[:id])
+      #     user.deposit(params[:balance])
+      #     redirect "/account"
+      # else
+      #     redirect "/failure"
+      # end
+
+      # 4TH ATTEMPT
+      @user = User.find(session[:user_id])
+      # @user.balance += params[:balance]
+      @user.update(balance: params[:balance])
+      redirect "/account"
+  end
+
+
+  # binding.pry
 
   get "/login" do
     erb :login
@@ -83,5 +124,7 @@ class ApplicationController < Sinatra::Base
       User.find(session[:user_id])
     end
   end
+
+  # binding.pry
 
 end
