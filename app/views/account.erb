@@ -2,4 +2,12 @@
 
 <p>We are currently working on your account.</p>
 
-<p><a href="/logout">Log Out</a></p>
+<h3>This is your balance</h3>
+<%= @user.balance %>
+
+<ul>
+  <li><p><a href="/deposit">Deposit</a></p></li>
+  <li><p><a href="/withdrawal">Withdrawal</a></p></li>
+  <li><p><a href="/logout">Log Out</a></p></li>
+</ul>
+
