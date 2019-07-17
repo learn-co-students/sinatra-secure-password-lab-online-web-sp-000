@@ -62,6 +62,29 @@ class ApplicationController < Sinatra::Base
     redirect "/"
   end
 
+  get '/deposit' do
+    erb :deposit_form
+  end
+
+  post '/deposit' do
+    current_user.make_deposit(params[:amount])
+    redirect '/account'
+  end
+
+  get '/withdrawal' do
+    erb :withdrawal_form
+  end
+
+  post '/withdrawal' do
+    if current_user.balance < params[:amount].to_i
+      erb :not_enough_funds
+    else
+      current_user.make_withdrawal(params[:amount])
+      redirect '/account'
+    end   
+  end
+
+
   helpers do
     def logged_in?
       !!session[:user_id]
@@ -81,3 +104,4 @@ class ApplicationController < Sinatra::Base
   end
 
 end
+

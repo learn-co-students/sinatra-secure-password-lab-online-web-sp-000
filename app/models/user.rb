@@ -4,11 +4,13 @@ class User < ActiveRecord::Base
 
   def make_deposit(amount)
     user_balance = self.balance
-    new_balance = user_balance + amount
+    new_balance = user_balance + amount.to_i
     self.update_attribute(:balance, new_balance)
   end
 
-  def withdraw_money
-    
+  def make_withdrawal(amount)
+    user_balance = self.balance
+    new_balance = user_balance - amount.to_i
+    self.update_attribute(:balance, new_balance)
   end
 end
