@@ -1,4 +1,5 @@
 require 'bundler'
+
 Bundler.require
 
 configure :development do
