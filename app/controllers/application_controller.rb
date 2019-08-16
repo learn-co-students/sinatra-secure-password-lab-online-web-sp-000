@@ -1,5 +1,7 @@
 require "./config/environment"
 require "./app/models/user"
+
+
 class ApplicationController < Sinatra::Base
 
   configure do
@@ -17,9 +19,19 @@ class ApplicationController < Sinatra::Base
   end
 
   post "/signup" do
-    #your code here
+   if params[:username].empty? || params[:password].empty?
+     redirect '/failure'
+  
+   else
+    User.new(:username => params[:username], :password => params[:password])
+    
+      redirect '/login'
+   
+    end
+ 	
+     end
 
-  end
+
 
   get '/account' do
     @user = User.find(session[:user_id])
@@ -31,8 +43,21 @@ class ApplicationController < Sinatra::Base
     erb :login
   end
 
-  post "/login" do
+   post "/login" do
     ##your code here
+    
+    if params[:username] == "" || params[:password] == ""
+       redirect to '/failure'
+    
+    else user = User.find_by(:username => params[:username])
+    
+     if user && user.authenticate(params[:password])
+      session[:user_id] = user.id
+      
+      redirect to '/account'
+    end 
+     
+    end
   end
 
   get "/failure" do
