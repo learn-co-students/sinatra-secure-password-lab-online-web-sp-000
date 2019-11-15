@@ -46,6 +46,7 @@ class ApplicationController < Sinatra::Base
     elsif params[:password] == ""
       redirect '/failure'
     else
+      user.save
       redirect '/account'
     end
   end
