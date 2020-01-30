@@ -1,3 +1,4 @@
+
 # Secure Password Lab
 
 ## Objectives
