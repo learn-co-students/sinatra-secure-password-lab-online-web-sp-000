@@ -1,10 +1,12 @@
 require "./config/environment"
 require "./app/models/user"
+
 class ApplicationController < Sinatra::Base
 
   configure do
     set :views, "app/views"
     enable :sessions
+    use Rack::Flash, :sweep => true
     set :session_secret, "password_security"
   end
 
@@ -26,10 +28,7 @@ class ApplicationController < Sinatra::Base
     end
   end
 
-  get '/account' do
-    @user = User.find(session[:user_id])
-    erb :account
-  end
+  
 
 
   get "/login" do
@@ -53,6 +52,34 @@ class ApplicationController < Sinatra::Base
   get "/logout" do
     session.clear
     redirect "/"
+  end
+
+  post "/deposit" do
+    @user = User.find(session[:user_id])
+    @user.balance += params[:deposit_amount].to_i
+    @user.save
+    flash[:notice] = "Thanks for the deposit"
+    redirect "/account"
+  end
+
+  post "/withdrawal" do
+    @user = User.find(session[:user_id])
+    if (params[:withdrawal_amount].to_i <= @user.balance)
+      @user.balance -= params[:withdrawal_amount].to_i
+      @user.save
+    else
+      flash[:error] = "Insufficient funds"
+    end
+    redirect "/account"
+  end
+
+  get '/account' do
+    @user = User.find(session[:user_id])
+    if logged_in?
+      erb :account
+    else
+      redirect '/login'
+    end
   end
 
   helpers do
