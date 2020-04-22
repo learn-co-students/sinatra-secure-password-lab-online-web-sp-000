@@ -1,5 +1,24 @@
 <h1>Welcome</h1>
 
-<p>We are currently working on your account.</p>
+<div class="account_container">
+    <h1>Account Holder Username:</h1>
+    <h2><%=@user.username%></h2>
+    <h1>Current Balance: <%=@user.balance%></h1>
+    <form action="/balance/edit/withdraw" method="post">
+        <input id="hidden" type="hidden" name="_method" value="PATCH">
+        <input type="text" name="withdraw_amount" placeholder="Withdraw Amount:">
+        <input type="submit" value="withdraw">
+    </form>
+    <form action="/balance/edit/deposit" method="post">
+        <input id="hidden" type="hidden" name="_method" value="PATCH">
+        <input type="text" name="deposit_amount" placeholder="Deposit Amount:">
+        <input type="submit" value="deposit">
+    </form>
+</div>
 
 <p><a href="/logout">Log Out</a></p>
+<style>
+    input {
+        margin-top: 10px;
+    }
+</style>

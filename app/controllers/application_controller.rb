@@ -21,14 +21,20 @@ class ApplicationController < Sinatra::Base
     if params[:username] == "" || params[:password] == ""
       redirect '/failure'
     else
-      User.create(:username => params[:username], :password => params[:password])
+      user = User.new(:username => params[:username], :password => params[:password])
+      if params[:initial_deposit] == ""
+        user.balance = 0.0
+      else
+        user.balance = params[:initial_deposit].to_f
+      end
+      user.save
       redirect '/login'
     end
 
   end
 
   get '/account' do
-    @user = User.find(session[:user_id])
+    @user = current_user
     erb :account
   end
 
@@ -54,6 +60,27 @@ class ApplicationController < Sinatra::Base
   get "/logout" do
     session.clear
     redirect "/"
+  end
+
+  patch '/balance/edit/withdraw' do
+    user = current_user
+    if user.balance < params[:withdraw_amount].to_f
+      redirect '/overdraft'
+    else
+      new_balance = user.balance - params[:withdraw_amount].to_f
+      user.update(balance: new_balance)
+      redirect '/account'
+    end
+  end
+
+  patch '/balance/edit/deposit' do
+    deposit_amount = params[:deposit_amount].to_f + current_user.balance
+    current_user.update(balance: deposit_amount)
+    redirect '/account'
+  end
+
+  get '/overdraft' do
+    erb :overdraft
   end
 
   helpers do
