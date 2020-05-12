@@ -1,8 +1,7 @@
 <h1>Welcome <%= @user.username %></h1>
 
-<p>We are currently working on your account.</p>
-<p>Withdrawing more than your available balance will result in an error.</p>
-<p>Your Balance: <%= @user.balance %></p>
+<p>You have successfully withdrawn.</p>
+<p>Your New Balance: <%= @user.balance %></p>
 <form method="post" action='/account/deposit'>
   <input type="number" name="deposit" placeholder="Deposit Amount:">
   <input type="submit" value="Deposit">
