@@ -2,4 +2,19 @@
 
 <p>We are currently working on your account.</p>
 
+<h3>Account Info for <%= current_user.username %></h3>
+<h4>Current Balance: $<%= current_user.balance %></h4>
+
+<h3>Make a Deposit or Withdrawl</h3>
+<form method="post" action="/transaction">
+    <p><label for="deposit">Enter Deposit Amount: $</label>
+    <input type="number" name="deposit"></p>
+
+    <p><label for="withdrawl">Enter Withdrawl Amount: $</label>
+    <input type="number" name="withdrawl"></p>
+
+    <p><input type="submit" value="Submit"></p>
+</form>
+
+<hr>
 <p><a href="/logout">Log Out</a></p>
