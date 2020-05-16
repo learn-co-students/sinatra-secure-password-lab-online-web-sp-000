@@ -17,8 +17,16 @@ class ApplicationController < Sinatra::Base
   end
 
   post "/signup" do
-    #your code here
-
+    user = User.new(username: params[:username], password: params[:password])
+    
+    if user.username != "" && user.save
+      # this will auto sign in a user, but school wants to do bad UX way
+      # session[:user_id] = user.id
+      # redirect '/account'
+      redirect '/login'
+    else
+      redirect '/failure'
+    end
   end
 
   get '/account' do
@@ -26,13 +34,34 @@ class ApplicationController < Sinatra::Base
     erb :account
   end
 
+  post '/transaction' do
+    if current_user.balance == nil
+      bal = 0.0 
+    else
+      bal = current_user.balance
+    end
+    
+    bal += params[:deposit].to_f
+    bal -= params[:withdrawl].to_f    
+    
+    current_user.update(balance: bal)    
+    
+    redirect '/account'
+  end
 
   get "/login" do
     erb :login
   end
 
   post "/login" do
-    ##your code here
+    user = User.find_by(username: params[:username])
+    
+    if user && user.authenticate(params[:password])
+      session[:user_id] = user.id
+      redirect '/account'      
+    else
+      redirect '/failure'
+    end
   end
 
   get "/failure" do
