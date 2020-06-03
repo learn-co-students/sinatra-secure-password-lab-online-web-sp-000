@@ -70,11 +70,15 @@ class ApplicationController < Sinatra::Base
 
   post "/account/withdrawal" do 
     user = User.find(session[:user_id])
-    new_balance = user.balance - params[:withdrawal_amount].to_i
+    if user.balance >= params[:withdrawal_amount].to_i
+      new_balance = user.balance - params[:withdrawal_amount].to_i
 
-    user.update(balance: new_balance)
+      user.update(balance: new_balance)
 
-    redirect '/account'
+      redirect '/account'
+    else 
+      erb :insufficient_funds
+    end 
   end 
 
   helpers do
