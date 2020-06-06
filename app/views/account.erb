@@ -2,4 +2,21 @@
 
 <p>We are currently working on your account.</p>
 
+<h2>Your balance is: $<%= @user.balance %></h2>
+
+<h2>Make a Deposit:</h2>
+<form action="/account/deposit" method="POST">
+<label for="deposit_amount">Deposit Amount: </label>
+<input type="text" name="deposit_amount" id="deposit_amount" min="0.01" step="0.01" placeholder="$" required><br><br>
+<input type="submit" value="Deposit My Money!">
+</form>
+
+
+<h2>Make a Withdrawal:</h2>
+<form action="/account/withdrawal" method="POST">
+<label for="withdrawal_amount">Withdrawal Amount: </label>
+<input type="text" name="withdrawal_amount" id="withdrawal_amount" min="0.01" step="0.01" placeholder="$" required><br><br>
+<input type="submit" value="Give Me My Money!">
+</form>
+
 <p><a href="/logout">Log Out</a></p>

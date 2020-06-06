@@ -59,6 +59,24 @@ class ApplicationController < Sinatra::Base
     redirect "/"
   end
 
+  post "/account/deposit" do
+    user = User.find(session[:user_id])
+    new_balance = user.balance + params[:deposit_amount].to_i
+
+    user.update(balance: new_balance)
+
+    redirect "/account"
+  end
+
+  post "/account/withdrawal" do
+    user = User.find(session[:user_id])
+    new_balance = user.balance - params[:withdrawal_amount].to_i
+    
+    user.update(balance: new_balance)
+
+    redirect "/account"
+  end
+
   helpers do
     def logged_in?
       !!session[:user_id]
