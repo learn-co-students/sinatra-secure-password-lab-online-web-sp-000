@@ -18,7 +18,14 @@ class ApplicationController < Sinatra::Base
 
   post "/signup" do
     #your code here
+    user = User.new(:username => params[:username], :password => params[:password])
 
+    if params[:password] != "" && params[:username] != "" #it neither username or pass is empty
+      #can't do nil or !! because empty string is not nil. 
+      redirect '/login'
+    else
+      redirect '/failure'
+    end
   end
 
   get '/account' do
@@ -33,6 +40,16 @@ class ApplicationController < Sinatra::Base
 
   post "/login" do
     ##your code here
+    @user = User.find_by(:username => params[:username])
+    if @user && @user.authenticate(params[:password])
+      session[:user_id] = @user.id
+      #apparently setting userid without : doesn't work
+      #either symbol or string with " " around it
+      redirect '/account'
+    else
+      redirect '/failure'
+    end
+
   end
 
   get "/failure" do
@@ -46,6 +63,9 @@ class ApplicationController < Sinatra::Base
 
   helpers do
     def logged_in?
+      # session[:user_id] retruns a value.
+      # !sesson returns true if it doesnt exist (!session means session == nil, a comparison question)
+      # !!session returns returns true if it does exist
       !!session[:user_id]
     end
 
