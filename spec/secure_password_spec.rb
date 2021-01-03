@@ -1,4 +1,5 @@
 require 'spec_helper'
+require_relative '../config/environment.rb'
 
 describe 'App' do
   include Rack::Test::Methods
