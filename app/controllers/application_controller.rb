@@ -20,8 +20,9 @@ class ApplicationController < Sinatra::Base
   post "/signup" do
     user = User.new(:username => params[:username], :password => params[:password])
     #binding.pry
-    if user.save 
-      redirect "/account"
+    if user.save
+      session[:user_id] = user.id
+      redirect "/login"
     else
       redirect "/failure"
     end
@@ -33,7 +34,7 @@ class ApplicationController < Sinatra::Base
 
   post "/login" do
     user = User.find_by(:username => params[:username])
-    binding.pry
+    #binding.pry
     if user && user.authenticate(params[:password])
       #binding.pry
       session[:user_id] = user.id 
@@ -44,10 +45,11 @@ class ApplicationController < Sinatra::Base
   end
 
   get '/account' do
-    if current_user && logged_in?
+    #binding.pry
+    if logged_in?
       erb :account
     else  
-      redirect "/login"
+      redirect "/"
     end
   end
 
@@ -61,11 +63,11 @@ class ApplicationController < Sinatra::Base
   end
 
   helpers do
-    def logged_in?
+    def logged_in? # returns true or false based on the presence of a session[:user_id]
       !!session[:user_id]
     end
 
-    def current_user
+    def current_user # returns the instance of the logged in user, based on the session[:user_id]
       User.find(session[:user_id])
     end
   end
