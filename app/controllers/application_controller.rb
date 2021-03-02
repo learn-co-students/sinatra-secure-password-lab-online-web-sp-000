@@ -17,8 +17,16 @@ class ApplicationController < Sinatra::Base
   end
 
   post "/signup" do
-    #your code here
+		user = User.new(:username => params[:username], :password => params[:password])
 
+    if user.username.blank? || user.password.blank?
+      #if the username field is equal to "", using user.username.nil?
+      #will not return false, as "" is a string and is true. Thus using
+      #.blank?, .empty?(though .empty can be tricky too), or user.username == "" is preferable.
+      redirect '/failure'
+    else user.save
+		  redirect "/login"
+		end
   end
 
   get '/account' do
@@ -32,7 +40,14 @@ class ApplicationController < Sinatra::Base
   end
 
   post "/login" do
-    ##your code here
+    user = User.find_by(:username => params[:username])
+ 
+		if user && user.authenticate(params[:password])
+		  session[:user_id] = user.id
+		  redirect "/account"
+		else
+		  redirect "/failure"
+		end
   end
 
   get "/failure" do
