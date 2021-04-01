@@ -1,0 +1,11 @@
+<h1>Withdraw</h1>
+
+<h3>Withdraw from your Account</h3>
+<h3 style="color:red;">Unable to complete transaction funds not available</h3>
+
+<form action="/withdraw_error" method="post">
+    <input type="number" name="withdraw" placeholder="Withdraw Ammount:">
+    <input type='submit' value='Submit'>
+</form>
+
+<h3 style="color:red;">You can only withdraw up to current balance: $<%=@user.balance%></h3>

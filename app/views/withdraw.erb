@@ -1,0 +1,11 @@
+<h1>Withdraw</h1>
+
+<h3>Withdraw from your Account</h3>
+
+
+<form action="/withdraw" method="post">
+    <input type="number" name="withdraw" placeholder="Deposit Ammount:">
+    <input type='submit' value='Submit'>
+</form>
+
+<h3>Your current balance is: <%=@user.balance%>

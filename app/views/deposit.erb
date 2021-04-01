@@ -1,0 +1,12 @@
+
+<h1>Deposit</h1>
+
+<h3>Deposit to your Account</h3>
+
+
+<form action="/deposit" method="post">
+    <input type="decimal" step="0.01" name="deposit" placeholder="Deposit Ammount:">
+    <input type='submit' value='Submit'>
+</form>
+
+<h3>Your current balance is: $<%=@user.balance%>
